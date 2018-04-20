@@ -11,7 +11,7 @@ import modelo.Editora;
  *
  * @author aluno
  */
-public class EditoraDAO extends GenericDAO<Editora, Integer>{
+public class EditoraDAO extends GenericDAO<Editora, String>{
     public EditoraDAO(){
         super(Editora.class);
     }

@@ -1,12 +1,12 @@
 <%@page import="java.util.List"%>
-<%@page import="modelo.Editora"%>
-<%@page import="dao.EditoraDAO"%>
+<%@page import="modelo.Autor"%>
+<%@page import="dao.AutorDAO"%>
 <%@include file="../cabecalho.jsp" %>
 
 <% 
     
-    EditoraDAO dao = new EditoraDAO();
-    List<Editora> lista;
+    AutorDAO dao = new AutorDAO();
+    List<Autor> lista;
     
     if (request.getParameter("txtFiltro") != null) {
         lista = dao.listar(request.getParameter("txtFiltro"));
@@ -15,7 +15,7 @@
    
     //verifico se é excluir
         if(request.getParameter("codigo") != null){
-            Editora obj = dao.buscarPorChavePrimaria(request.getParameter("codigo"));
+            Autor obj = dao.buscarPorChavePrimaria(Integer.parseInt(request.getParameter("codigo")));
             if(obj != null){
                 dao.excluir(obj);
             }
@@ -31,7 +31,7 @@
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
-            Gerenciamento de Editoras
+            Gerenciamento de Autores - INCOMPLETO
 
         </h1>
         <ol class="breadcrumb">
@@ -58,7 +58,7 @@
 <!-- /.row -->
 <div class="row">
     <div class="panel panel-default">
-        <form action="../UploadWS" method="POST" enctype="multipart/form-data">
+        <form action="#" method="post">
             <div class="form-group input-group">
                 <input type="text" class="form-control" name="txtFiltro" placeholder="digite...">
                                 <span class="input-group-btn"><button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button></span>
@@ -71,22 +71,26 @@
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th>Cnpj</th>
+                        <th>Código</th>
                         <th>Nome</th>
-                        <th>Logo</th>
+                        <th>Nacionalidade</th>
+                        <th>Sexo</th>
+                        <th>Foto</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <%for(Editora item: lista)
+                    <%for(Autor item: lista)
                     {
                     %>
                     <tr>
-                        <td><%=item.getCnpj() %></td>
+                        <td><%=item.getId() %></td>
                         <td><%=item.getNome() %></td>
-                        <td><img src="../arquivos/<%=item.getLogo() %>"/> </td>
-                        <td><a href="upd.jsp?txtCnpj=<%=item.getCnpj()%>" class="btn  btn-primary btn-sm">Alterar</a>
-                            <button class="btn  btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="codigo='<%=item.getCnpj()%>'">Excluir</button>  
+                        <td><%=item.getNacionalidade() %></td>
+                        <td><%=item.getSexo() %></td>
+                        <td><img src="../arquivos/<%=item.getFoto() %>"/> </td>
+                        <td><a href="upd.jsp?codigo=<%=item.getId()%>" class="btn  btn-primary btn-sm">Alterar</a>
+                            <button class="btn  btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="codigo=<%=item.getId()%>">Excluir</button>  
                         </td>
                     </tr>
                     <% } %>

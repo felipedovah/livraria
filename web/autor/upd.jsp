@@ -1,23 +1,18 @@
 <%@page import="java.math.BigDecimal"%>
-<%@page import="modelo.Editora"%>
-<%@page import="dao.EditoraDAO"%>
+<%@page import="modelo.Autor"%>
+<%@page import="dao.AutorDAO"%>
 <%@include file="../cabecalho.jsp" %>
 <%
 String msg ="";
 String classe = "";
     
-    EditoraDAO dao = new EditoraDAO();
-    Editora obj = new Editora();
+    AutorDAO dao = new AutorDAO();
+    Autor obj = new Autor();
     //verifica se é postm ou seja, quer alterar
     if(request.getMethod().equals("POST")){ 
         //popular com oq ele digitou no form    
         obj.setNome(request.getParameter("txtNome"));
-        obj.setCnpj(request.getParameter("txtCnpj"));
-        
-        if(request.getParameter("txtLogo") != null){
-            obj.setLogo(request.getParameter("txtLogo"));
-        }
-        
+        obj.setId(Integer.parseInt(request.getParameter("codigo")));
         Boolean resultado = dao.alterar(obj);
         
         if(resultado){
@@ -31,13 +26,13 @@ String classe = "";
         
     }else{
         //e GET
-        if(request.getParameter("txtCnpj") == null){
+        if(request.getParameter("codigo") == null){
             response.sendRedirect("index.jsp");
             return;
         }
         
-        dao = new EditoraDAO();
-        obj = dao.buscarPorChavePrimaria(request.getParameter("txtCnpj"));
+        dao = new AutorDAO();
+        obj = dao.buscarPorChavePrimaria(Integer.parseInt(request.getParameter("codigo")));
         
         if(obj == null){
             response.sendRedirect("index.jsp");
@@ -65,7 +60,7 @@ String classe = "";
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
-            Editora
+            Autor
         </div>
         <div class="panel-body">
 
@@ -77,18 +72,13 @@ String classe = "";
                 <div class="col-lg-6">
 
                     <div class="form-group">
-                        <label>Cnpj</label>
-                        <input class="form-control" type="text" name="txtCnpj" readonly value="<%=obj.getCnpj()%>"/>
+                        <label>Código</label>
+                        <input class="form-control" type="text" name="txtCodigo" readonly value="<%=obj.getId()%>"/>
                     </div>
                     
                     <div class="form-group">
                         <label>Nome</label>
                         <input class="form-control" type="text" name="txtNome" required value="<%=obj.getNome() %>" />
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Logo</label>
-                        <input type="file" name="txtLogo" required value="<%=obj.getLogo() %>" />
                     </div>
 
 
