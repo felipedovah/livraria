@@ -9,17 +9,17 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -50,14 +50,25 @@ public class Livro implements Serializable {
     @Column(name = "datapublicacao")
     @Temporal(TemporalType.DATE)
     private Date datapublicacao;
+    @Column(name = "imagem1")
+    private String imagem1;
+    @Column(name = "imagem2")
+    private String imagem2;
+    @Column(name = "imagem3")
+    private String imagem3;
+    @Column(name = "sinopse")
+    private String sinopse;
+    @JoinTable(name = "autor_livro", joinColumns = {
+        @JoinColumn(name = "livro", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "autor", referencedColumnName = "id")})
+    @ManyToMany
+    private List<Autor> autorList;
     @JoinColumn(name = "categoria", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Categoria categoria;
     @JoinColumn(name = "editora", referencedColumnName = "cnpj")
     @ManyToOne(optional = false)
     private Editora editora;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "livro")
-    private List<AutorLivro> autorLivroList;
 
     public Livro() {
     }
@@ -105,6 +116,46 @@ public class Livro implements Serializable {
         this.datapublicacao = datapublicacao;
     }
 
+    public String getImagem1() {
+        return imagem1;
+    }
+
+    public void setImagem1(String imagem1) {
+        this.imagem1 = imagem1;
+    }
+
+    public String getImagem2() {
+        return imagem2;
+    }
+
+    public void setImagem2(String imagem2) {
+        this.imagem2 = imagem2;
+    }
+
+    public String getImagem3() {
+        return imagem3;
+    }
+
+    public void setImagem3(String imagem3) {
+        this.imagem3 = imagem3;
+    }
+
+    public String getSinopse() {
+        return sinopse;
+    }
+
+    public void setSinopse(String sinopse) {
+        this.sinopse = sinopse;
+    }
+
+    public List<Autor> getAutorList() {
+        return autorList;
+    }
+
+    public void setAutorList(List<Autor> autorList) {
+        this.autorList = autorList;
+    }
+
     public Categoria getCategoria() {
         return categoria;
     }
@@ -119,14 +170,6 @@ public class Livro implements Serializable {
 
     public void setEditora(Editora editora) {
         this.editora = editora;
-    }
-
-    public List<AutorLivro> getAutorLivroList() {
-        return autorLivroList;
-    }
-
-    public void setAutorLivroList(List<AutorLivro> autorLivroList) {
-        this.autorLivroList = autorLivroList;
     }
 
     @Override
