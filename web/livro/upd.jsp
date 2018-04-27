@@ -1,3 +1,4 @@
+<%@page import="modelo.Autor"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="modelo.Categoria"%>
 <%@page import="dao.CategoriaDAO"%>
@@ -80,7 +81,57 @@ String classe = "";
                     
                     <div class="form-group">
                         <label>Nome</label>
-                        <input class="form-control" type="text" name="txtNome" required value="<%=obj.getNome() %>" />
+                        <input class="form-control" type="text"  name="txtNome"  required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Preço</label>
+                        <input class="form-control" type="text"  name="txtPreco"  required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Data Publicação</label>
+                        <input class="form-control" type="text"  name="txtDataPublicacao"  required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <input class="form-control" type="text"  name="txtCategoria"  required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Editora</label>
+                        <input class="form-control" type="text"  name="txtEditora"  required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Imagem 1</label>
+                        <input class="form-control" type="text"  name="txtImg1"  required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Imagem 2</label>
+                        <input class="form-control" type="text"  name="txtImg2"  required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Imagem 3</label>
+                        <input class="form-control" type="text"  name="txtImg3"  required />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Imagem 3</label>
+                        <input class="form-control" type="text"  name="txtImg3"  required />
+                        <TextArea name="txtSinopse"></TextArea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Autores</label>
+
+                        <%for (Autor a : autores) {%>
+                        <input type="checkbox" name="autoreschk" value="<%=a.getId()%>"><%=a.getNome()%>
+
+                        <%}%>
                     </div>
 
 

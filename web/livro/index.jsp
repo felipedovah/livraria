@@ -73,6 +73,14 @@
                     <tr>
                         <th>Código</th>
                         <th>Nome</th>
+                        <th>Preço</th>
+                        <th>Data Publicação</th>
+                        <th>Categoria</th>
+                        <th>Editora</th>
+                        <th>Imagem 1</th>
+                        <th>Imagem 2</th>
+                        <th>Imagem 3</th>
+                        <th>Sinopse</th>
                         <th >Ações</th>
                     </tr>
                 </thead>
@@ -83,6 +91,14 @@
                     <tr>
                         <td><%=item.getId() %></td>
                         <td><%=item.getNome() %></td>
+                        <td><%=item.getPreco() %></td>
+                        <td><%=item.getDatapublicacao() %></td>
+                        <td><%=item.getCategoria().getNome() %></td>
+                        <td><%=item.getEditora().getNome() %></td>
+                        <td><%=item.getImagem1() %></td>
+                        <td><%=item.getImagem2() %></td>
+                        <td><%=item.getImagem3() %></td>
+                        <td><%=item.getSinopse() %></td>
                         <td><a href="upd.jsp?codigo=<%=item.getId()%>" class="btn  btn-primary btn-sm">Alterar</a>
                             <button class="btn  btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="codigo=<%=item.getId()%>">Excluir</button>  
                         </td>

@@ -31,7 +31,7 @@
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
-            Gerenciamento de Autores - INCOMPLETO
+            Gerenciamento de Autores - FALTA FILTRO
 
         </h1>
         <ol class="breadcrumb">

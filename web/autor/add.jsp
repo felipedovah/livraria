@@ -13,7 +13,7 @@
     if (request.getParameter("txtNome") != null) {
         obj.setNome(request.getParameter("txtNome"));
         obj.setNacionalidade(request.getParameter("txtNacionalidade"));
-        obj.setSexo(request.getParameter("txtNome").charAt(0));
+        obj.setSexo(request.getParameter("txtSexo").charAt(0));
         obj.setFoto(request.getParameter("txtFoto"));
 
         Boolean resultado = dao.incluir(obj);
@@ -70,7 +70,10 @@
                     
                     <div class="form-group">
                         <label>Sexo</label>
-                        <input maxlength="1" class="form-control" type="text"  name="txtSexo"  required />
+                        <select name="txtSexo">
+                            <option value="M">Masculino</option>
+                            <option value="F">Feminino</option>
+                        </select>
                     </div>
                     
                     <div class="form-group">

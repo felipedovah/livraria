@@ -11,8 +11,11 @@ String classe = "";
     //verifica se é postm ou seja, quer alterar
     if(request.getMethod().equals("POST")){ 
         //popular com oq ele digitou no form    
-        obj.setNome(request.getParameter("txtNome"));
         obj.setId(Integer.parseInt(request.getParameter("codigo")));
+        obj.setNome(request.getParameter("txtNome"));
+        obj.setNacionalidade(request.getParameter("txtNacionalidade"));
+        obj.setSexo(request.getParameter("txtNome").charAt(0));
+        obj.setFoto(request.getParameter("txtFoto"));
         Boolean resultado = dao.alterar(obj);
         
         if(resultado){
@@ -67,7 +70,7 @@ String classe = "";
             <div class="alert <%=classe%>">
                 <%=msg%>
             </div>
-            <form action="#" method="post">
+            <form action="../UploadWS" method="post" enctype="multipart/form-data">
                 
                 <div class="col-lg-6">
 
@@ -80,13 +83,29 @@ String classe = "";
                         <label>Nome</label>
                         <input class="form-control" type="text" name="txtNome" required value="<%=obj.getNome() %>" />
                     </div>
+                    
+                    
+                    <div class="form-group">
+                        <label>Nacionalidade</label>
+                        <input class="form-control" type="text"  name="txtNacionalidade"  required value="<%=obj.getNacionalidade() %>" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Sexo</label>
+                        <input maxlength="1" class="form-control" type="text"  name="txtSexo"  required value="<%=obj.getSexo() %>" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Foto</label>
+                        <input type="file" name="txtFoto" required value="<%=obj.getNome() %>">
+                    </div>
 
 
                 <button class="btn btn-primary btn-sm" type="submit">Salvar</button>
                 
-            </form>
 
-        </div>
+                </div>
+            </form>>
 
 
     </div>
