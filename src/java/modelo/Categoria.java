@@ -26,7 +26,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "categoria")
 @NamedQueries({
-    @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c")})
+    @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c"),
+    @NamedQuery(name = "Categoria.findFilter", query = "SELECT c FROM Categoria c WHERE c.nome like :filtro")
+    })
 public class Categoria implements Serializable {
 
     private static final long serialVersionUID = 1L;

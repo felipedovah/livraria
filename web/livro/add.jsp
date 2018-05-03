@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="modelo.Categoria"%>
 <%@page import="dao.CategoriaDAO"%>
 <%@page import="dao.EditoraDAO"%>
@@ -10,7 +11,6 @@
 <%@page import="modelo.Autor"%>
 <%@page import="dao.AutorDAO"%>
 <%@page import="java.math.BigDecimal"%>
-
 <%@page import="java.util.List"%>
 
 <%@include file="../cabecalho.jsp" %>
@@ -29,10 +29,24 @@
             Livro l = new Livro();
             l.setNome(request.getParameter("txtNome"));
             l.setPreco(Float.parseFloat(request.getParameter("txtPreco")));
-            l.setDatapublicacao(new Date());
-            l.setCategoria();
-            //l.setCategoria(categoria);
-            l.setPreco(13.12f);
+
+            SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+            Date datapub = sf.parse(request.getParameter("txtDataPublicacao"));
+            l.setDatapublicacao(datapub);
+
+            if (request.getParameter("txtImg1") != null) {
+                l.setImagem1(request.getParameter("txtImg1"));
+            }
+
+            if (request.getParameter("txtImg2") != null) {
+                l.setImagem2(request.getParameter("txtImg2"));
+            }
+
+            if (request.getParameter("txtImg3") != null) {
+                l.setImagem3(request.getParameter("txtImg3"));
+            }
+
+            l.setSinopse(request.getParameter("txtSinopse"));
             //Autores
             List<Autor> listaautores = new ArrayList<>();
             for (String id : autoresid) {
@@ -40,11 +54,26 @@
                 listaautores.add(adao.buscarPorChavePrimaria(idinteger));
             }
             l.setAutorList(listaautores);
-            
-            
+
+            Categoria c = new Categoria();
+            c.setId(Integer.parseInt(request.getParameter("categorias")));
+            l.setCategoria(c);
+
+            Editora e = new Editora();
+            e.setCnpj(request.getParameter("editoras"));
+            l.setEditora(e);
 
             LivroDAO dao = new LivroDAO();
             dao.incluir(l);
+
+            Boolean resultado = dao.incluir(l);
+            if (resultado) {
+                msg = "Registro cadastrado com sucesso";
+                classe = "alert-success";
+            } else {
+                msg = "Não foi possível cadastrar";
+                classe = "alert-danger";
+            }
         }
 
     }
@@ -120,17 +149,17 @@
 
                     <div class="form-group">
                         <label>Imagem 1</label>
-                        <input class="form-control" type="text"  name="txtImg1"  required />
+                        <input type="file"  name="txtImg1"/>
                     </div>
 
                     <div class="form-group">
                         <label>Imagem 2</label>
-                        <input class="form-control" type="text"  name="txtImg2"  required />
+                        <input type="file"  name="txtImg2"/>
                     </div>
 
                     <div class="form-group">
                         <label>Imagem 3</label>
-                        <input class="form-control" type="text"  name="txtImg3"  required />
+                        <input type="file"  name="txtImg3"/>
                     </div>
 
                     <div class="form-group">

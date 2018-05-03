@@ -1,3 +1,7 @@
+<%@page import="dao.EditoraDAO"%>
+<%@page import="dao.AutorDAO"%>
+<%@page import="modelo.Editora"%>
+<%@page import="java.util.List"%>
 <%@page import="modelo.Autor"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="modelo.Categoria"%>
@@ -9,6 +13,9 @@ String classe = "";
     
     CategoriaDAO dao = new CategoriaDAO();
     Categoria obj = new Categoria();
+    
+    AutorDAO adao = new AutorDAO();
+    EditoraDAO edao = new EditoraDAO();
     //verifica se é postm ou seja, quer alterar
     if(request.getMethod().equals("POST")){ 
         //popular com oq ele digitou no form    
@@ -42,6 +49,10 @@ String classe = "";
             return;
         } 
     }
+    
+    List<Autor> autores = adao.listar();
+    List<Editora> editoras = edao.listar();
+    List<Categoria> categorias = cdao.listar();
 %>
 <div class="row">
     <div class="col-lg-12">
@@ -128,7 +139,7 @@ String classe = "";
                     <div class="form-group">
                         <label>Autores</label>
 
-                        <%for (Autor a : autores) {%>
+                        <%for (Autor a : autor) {%>
                         <input type="checkbox" name="autoreschk" value="<%=a.getId()%>"><%=a.getNome()%>
 
                         <%}%>

@@ -58,7 +58,7 @@
 <!-- /.row -->
 <div class="row">
     <div class="panel panel-default">
-        <form action="#" method="post">
+        <form action="../UploadWS" method="POST" enctype="multipart/form-data">
             <div class="form-group input-group">
                 <input type="text" class="form-control" name="txtFiltro" placeholder="digite...">
                                 <span class="input-group-btn"><button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button></span>
@@ -81,7 +81,7 @@
                         <th>Imagem 2</th>
                         <th>Imagem 3</th>
                         <th>Sinopse</th>
-                        <th >Ações</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,9 +95,9 @@
                         <td><%=item.getDatapublicacao() %></td>
                         <td><%=item.getCategoria().getNome() %></td>
                         <td><%=item.getEditora().getNome() %></td>
-                        <td><%=item.getImagem1() %></td>
-                        <td><%=item.getImagem2() %></td>
-                        <td><%=item.getImagem3() %></td>
+                        <td><img src="../arquivos/<%=item.getImagem1() %>" width="40px" height="40px"/> </td>
+                        <td><img src="../arquivos/<%=item.getImagem2() %>" width="40px" height="40px"/> </td>
+                        <td><img src="../arquivos/<%=item.getImagem3() %>" width="40px" height="40px"/> </td>
                         <td><%=item.getSinopse() %></td>
                         <td><a href="upd.jsp?codigo=<%=item.getId()%>" class="btn  btn-primary btn-sm">Alterar</a>
                             <button class="btn  btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="codigo=<%=item.getId()%>">Excluir</button>  

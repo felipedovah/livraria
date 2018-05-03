@@ -14,7 +14,10 @@
         obj.setNome(request.getParameter("txtNome"));
         obj.setNacionalidade(request.getParameter("txtNacionalidade"));
         obj.setSexo(request.getParameter("txtSexo").charAt(0));
-        obj.setFoto(request.getParameter("txtFoto"));
+        
+        if(request.getParameter("txtFoto") != null){
+            obj.setFoto(request.getParameter("txtFoto"));
+        }
 
         Boolean resultado = dao.incluir(obj);
         if (resultado) {
