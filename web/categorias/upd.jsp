@@ -3,43 +3,42 @@
 <%@page import="dao.CategoriaDAO"%>
 <%@include file="../cabecalho.jsp" %>
 <%
-String msg ="";
-String classe = "";
-    
+    String msg = "";
+    String classe = "";
+
     CategoriaDAO dao = new CategoriaDAO();
     Categoria obj = new Categoria();
     //verifica se é postm ou seja, quer alterar
-    if(request.getMethod().equals("POST")){ 
+    if (request.getMethod().equals("POST")) {
         //popular com oq ele digitou no form    
         obj.setNome(request.getParameter("txtNome"));
         obj.setId(Integer.parseInt(request.getParameter("codigo")));
-        
+
         Boolean resultado = dao.alterar(obj);
         dao.fecharConexao();
-        
-        if(resultado){
+
+        if (resultado) {
             msg = "Registro alterado com sucesso";
             classe = "alert-success";
-        }
-        else{
+        } else {
             msg = "Não foi possível alterar";
             classe = "alert-danger";
         }
-        
-    }else{
+
+    } else {
         //e GET
-        if(request.getParameter("codigo") == null){
+        if (request.getParameter("codigo") == null) {
             response.sendRedirect("index.jsp");
             return;
         }
-        
+
         dao = new CategoriaDAO();
         obj = dao.buscarPorChavePrimaria(Integer.parseInt(request.getParameter("codigo")));
-        
-        if(obj == null){
+
+        if (obj == null) {
             response.sendRedirect("index.jsp");
             return;
-        } 
+        }
     }
 %>
 <div class="row">
@@ -69,23 +68,23 @@ String classe = "";
             <div class="alert <%=classe%>">
                 <%=msg%>
             </div>
-            <form action="#" method="post">
-                
+            <form action="../UploadWS" method="post" enctype="multipart/form-data">
+
                 <div class="col-lg-6">
 
                     <div class="form-group">
                         <label>Código</label>
                         <input class="form-control" type="text" name="txtCodigo" readonly value="<%=obj.getId()%>"/>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Nome</label>
-                        <input class="form-control" type="text" name="txtNome" required value="<%=obj.getNome() %>" />
+                        <input class="form-control" type="text" name="txtNome" required value="<%=obj.getNome()%>" />
                     </div>
 
 
-                <button class="btn btn-primary btn-sm" type="submit">Salvar</button>
-                
+                    <button class="btn btn-primary btn-sm" type="submit">Salvar</button>
+
             </form>
 
         </div>
