@@ -1,3 +1,4 @@
+<%@page import="util.StormData"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -17,40 +18,50 @@
     String classe = "";
     CategoriaDAO cdao = new CategoriaDAO();
     AutorDAO adao = new AutorDAO();
+    LivroDAO dao = new LivroDAO();
     EditoraDAO edao = new EditoraDAO();
+    Livro obj = new Livro();
     
     if (request.getMethod().equals("POST")) {
         if (request.getParameter("txtNome") != null) {
             String[] autoresid = request.getParameter("autores").split(";");
+            
 
             //popular o livro
             Livro l = new Livro();
+            l.setId(Integer.parseInt(request.getParameter("codigo")));
             l.setNome(request.getParameter("txtNome"));
             l.setPreco(Float.parseFloat(request.getParameter("txtPreco")));
 
             SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
             Date datapub = sf.parse(request.getParameter("txtDataPublicacao"));
             l.setDatapublicacao(datapub);
+            
+            
             //----------------------------
-            if (request.getParameter("txtImg1") != null) {
-                l.setImagem1(request.getParameter("txtImg1"));
+            if (request.getParameter("arquivo1") != null) {
+                l.setImagem1(request.getParameter("arquivo1"));
             }
             else{
                 l.setImagem1(request.getParameter("txtFotoVelha"));
             }
+            //--
+            if (request.getParameter("arquivo2") != null) {
+                l.setImagem2(request.getParameter("arquivo2"));
+            }
+            else{
+                l.setImagem2(request.getParameter("txtFotoVelha2"));
+            }
+            //--
+            if (request.getParameter("arquivo3") != null) {
+                l.setImagem3(request.getParameter("arquivo3"));
+            }
+            else{
+                l.setImagem3(request.getParameter("txtFotoVelha3"));
+            }
             //----------------------------
+
             
-            if (request.getParameter("txtImg1") != null) {
-                l.setImagem1(request.getParameter("txtImg1"));
-            }
-
-            if (request.getParameter("txtImg2") != null) {
-                l.setImagem2(request.getParameter("txtImg2"));
-            }
-
-            if (request.getParameter("txtImg3") != null) {
-                l.setImagem3(request.getParameter("txtImg3"));
-            }
 
             l.setSinopse(request.getParameter("txtSinopse"));
             //Autores
@@ -68,20 +79,22 @@
             Editora e = new Editora();
             e.setCnpj(request.getParameter("editoras"));
             l.setEditora(e);
+            
+            Boolean resultado = dao.alterar(l);
 
-            LivroDAO dao = new LivroDAO();
-            dao.incluir(l);
+            if (resultado) {
+                msg = "Registro alterado com sucesso";
+                classe = "alert-success";
+            } else {
+                msg = "Não foi possível alterar";
+                classe = "alert-danger";
+            }
+            
+            
+            obj = l;
         }
     }
-    
-    Livro obj = new Livro();
-
-    
-    //verifica se é postm ou seja, quer alterar
-    if (request.getMethod().equals("POST")) {
-      
-
-    } else {
+    else {
         //e GET
         if (request.getParameter("codigo") == null) {
             response.sendRedirect("index.jsp");
@@ -96,6 +109,12 @@
             return;
         }
     }
+    
+    
+
+    
+    //verifica se é postm ou seja, quer alterar
+     
 
     List<Autor> autores = adao.listar();
     List<Editora> editoras = edao.listar();
@@ -134,7 +153,7 @@
 
                     <div class="form-group">
                         <label>Código</label>
-                        <input class="form-control" type="text" name="txtCodigo" readonly value="<%=obj.getId()%>"/>
+                        <input class="form-control" type="text" name="codigo" readonly value="<%=obj.getId()%>"/>
                     </div>
 
                     <div class="form-group">
@@ -154,12 +173,12 @@
 
                     <div class="form-group">
                         <label>Data Publicação</label>
-                        <input class="form-control" type="text"  name="txtDataPublicacao"  required value="<%=obj.getDatapublicacao()%>"/>
+                        <input class="form-control" type="text"  name="txtDataPublicacao"  required value="<%=StormData.formata(obj.getDatapublicacao())%>"/>
                     </div>
 
                     <div class="form-group">
                         <label>Categoria</label>
-                        <select name="selCategoria" class="form-control">
+                        <select name="categorias" class="form-control">
                             <option>Selecione</option>
                         <%
                          String selecionado;
@@ -184,7 +203,7 @@
                         
                     <div class="form-group">
                         <label>Editora</label>
-                        <select name="selCategoria" class="form-control">
+                        <select name="editoras" class="form-control">
                             <option>Selecione</option>
                         <%
                          String sele;
@@ -210,20 +229,24 @@
                    <div class="form-group">
                         <label>Imagem 1</label>
                         <input type="file" name="arquivo1" id="arquivo1"  accept="image/*" />
-                        <img src="../arquivos/<%=obj.getImagem1()%>" id="img1"/>
+                        <img width="40px" height="40px" src="../arquivos/<%=obj.getImagem1()%>" id="img1"/>
                         <input type="hidden" name="txtFotoVelha" value="<%=obj.getImagem1()%>">
                    </div>
-
-                    <div class="form-group">
+                   
+                   <div class="form-group">
                         <label>Imagem 2</label>
-                        <input class="form-control" type="text"  name="txtImg2"/>
-                    </div>
-
-                    <div class="form-group">
+                        <input type="file" name="arquivo2" id="arquivo2"  accept="image/*" />
+                        <img width="40px" height="40px" src="../arquivos/<%=obj.getImagem2()%>" id="img2"/>
+                        <input type="hidden" name="txtFotoVelha2" value="<%=obj.getImagem2()%>">
+                   </div>
+                   
+                   <div class="form-group">
                         <label>Imagem 3</label>
-                        <input class="form-control" type="text"  name="txtImg3"/>
-                    </div>
-                    
+                        <input type="file" name="arquivo3" id="arquivo3"  accept="image/*" />
+                        <img width="40px" height="40px" src="../arquivos/<%=obj.getImagem3()%>" id="img3"/>
+                        <input type="hidden" name="txtFotoVelha3" value="<%=obj.getImagem3()%>">
+                   </div>
+               
                     <div class="form-group">
                         <label>Autores</label>
 
@@ -235,7 +258,7 @@
                                 selecionado = "";
                             }
                         %>
-                        <input type="checkbox" name="autoreschk" value="<%=a.getId()%>"><%=a.getNome()%>
+                        <input type="checkbox" name="autores" value="<%=a.getId()%>"><%=a.getNome()%>
 
                         <%}%>
                     </div>
@@ -260,10 +283,17 @@
             }
             
             reader.readAsDataURL(input.files[0]);
+            
         }
     }
     
     $("#arquivo1").change(function(){
         readURL(this,"img1");
+    });
+    $("#arquivo2").change(function(){
+        readURL(this,"img2");
+    });
+    $("#arquivo3").change(function(){
+        readURL(this,"img3");
     });
 </script>p" %>
