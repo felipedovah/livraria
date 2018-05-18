@@ -129,24 +129,27 @@
                         <input class="form-control" type="text"  name="txtDataPublicacao"  required />
                     </div>
 
+                    
                     <div class="form-group">
-                        <label>Categorias</label>
-
-                        <%for (Categoria c : categorias) {%>
-                        <input type="checkbox" name="categorias" value="<%=c.getId()%>"><%=c.getNome()%>
-
-                        <%}%>
+                        <label>Categoria</label>
+                        <select name="categorias" class="form-control">
+                            <%for(Categoria c:categorias){%>
+                            <option value="<%=c.getId()%>"><%=c.getNome()%>
+                            </option>
+                            <%}%>
+                        </select>
                     </div>
-
+                    
                     <div class="form-group">
                         <label>Editora</label>
-
-                        <%for (Editora e : editoras) {%>
-                        <input type="checkbox" name="editoras" value="<%=e.getCnpj()%>"><%=e.getNome()%>
-
-                        <%}%>
-                    </div>
-
+                        <select name="editoras" class="form-control">
+                            <%for(Editora e:editoras){%>
+                            <option value="<%=e.getCnpj()%>"><%=e.getNome()%>
+                            </option>
+                            <%}%>
+                        </select>
+                    </div>    
+                        
                     <div class="form-group">
                         <label>Imagem 1</label>
                         <input type="file"  name="txtImg1"/>
@@ -172,6 +175,7 @@
                         <label>Autores</label>
 
                         <%for (Autor a : autores) {%>
+                        
                         <input type="checkbox" name="autores" value="<%=a.getId()%>"><%=a.getNome()%>
 
                         <%}%>

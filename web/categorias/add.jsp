@@ -7,6 +7,7 @@
 <%
     String msg = "";
     String classe = "";
+    
     Categoria obj = new Categoria();
     CategoriaDAO dao = new CategoriaDAO();
     

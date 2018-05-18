@@ -1,3 +1,8 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="modelo.Livro"%>
+<%@page import="dao.LivroDAO"%>
 <%@page import="dao.EditoraDAO"%>
 <%@page import="dao.AutorDAO"%>
 <%@page import="modelo.Editora"%>
@@ -10,28 +15,71 @@
 <%
     String msg = "";
     String classe = "";
-
-    CategoriaDAO dao = new CategoriaDAO();
-    Categoria obj = new Categoria();
-
+    CategoriaDAO cdao = new CategoriaDAO();
     AutorDAO adao = new AutorDAO();
     EditoraDAO edao = new EditoraDAO();
+    
+    if (request.getMethod().equals("POST")) {
+        if (request.getParameter("txtNome") != null) {
+            String[] autoresid = request.getParameter("autores").split(";");
+
+            //popular o livro
+            Livro l = new Livro();
+            l.setNome(request.getParameter("txtNome"));
+            l.setPreco(Float.parseFloat(request.getParameter("txtPreco")));
+
+            SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+            Date datapub = sf.parse(request.getParameter("txtDataPublicacao"));
+            l.setDatapublicacao(datapub);
+            //----------------------------
+            if (request.getParameter("txtImg1") != null) {
+                l.setImagem1(request.getParameter("txtImg1"));
+            }
+            else{
+                l.setImagem1(request.getParameter("txtFotoVelha"));
+            }
+            //----------------------------
+            
+            if (request.getParameter("txtImg1") != null) {
+                l.setImagem1(request.getParameter("txtImg1"));
+            }
+
+            if (request.getParameter("txtImg2") != null) {
+                l.setImagem2(request.getParameter("txtImg2"));
+            }
+
+            if (request.getParameter("txtImg3") != null) {
+                l.setImagem3(request.getParameter("txtImg3"));
+            }
+
+            l.setSinopse(request.getParameter("txtSinopse"));
+            //Autores
+            List<Autor> listaautores = new ArrayList<>();
+            for (String id : autoresid) {
+                Integer idinteger = Integer.parseInt(id);
+                listaautores.add(adao.buscarPorChavePrimaria(idinteger));
+            }
+            l.setAutorList(listaautores);
+
+            Categoria c = new Categoria();
+            c.setId(Integer.parseInt(request.getParameter("categorias")));
+            l.setCategoria(c);
+
+            Editora e = new Editora();
+            e.setCnpj(request.getParameter("editoras"));
+            l.setEditora(e);
+
+            LivroDAO dao = new LivroDAO();
+            dao.incluir(l);
+        }
+    }
+    
+    Livro obj = new Livro();
+
+    
     //verifica se é postm ou seja, quer alterar
     if (request.getMethod().equals("POST")) {
-        //popular com oq ele digitou no form    
-        obj.setNome(request.getParameter("txtNome"));
-        obj.setId(Integer.parseInt(request.getParameter("codigo")));
-
-        Boolean resultado = dao.alterar(obj);
-        dao.fecharConexao();
-
-        if (resultado) {
-            msg = "Registro alterado com sucesso";
-            classe = "alert-success";
-        } else {
-            msg = "Não foi possível alterar";
-            classe = "alert-danger";
-        }
+      
 
     } else {
         //e GET
@@ -40,7 +88,7 @@
             return;
         }
 
-        dao = new CategoriaDAO();
+        
         obj = dao.buscarPorChavePrimaria(Integer.parseInt(request.getParameter("codigo")));
 
         if (obj == null) {
@@ -73,7 +121,7 @@
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
-            Categoria
+            Livro
         </div>
         <div class="panel-body">
 
@@ -91,54 +139,102 @@
 
                     <div class="form-group">
                         <label>Nome</label>
-                        <input class="form-control" type="text"  name="txtNome"  required />
+                        <input class="form-control" type="text"  name="txtNome"  required value="<%=obj.getNome()%>"/>
                     </div>
 
                     <div class="form-group">
                         <label>Preço</label>
-                        <input class="form-control" type="text"  name="txtPreco"  required />
+                        <input class="form-control" type="text"  name="txtPreco"  required value="<%=obj.getPreco()%>"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Sinopse</label>
+                        <textarea class="form-control"  name="txtSinopse"><%=obj.getSinopse()%>
+                        </textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Data Publicação</label>
-                        <input class="form-control" type="text"  name="txtDataPublicacao"  required />
+                        <input class="form-control" type="text"  name="txtDataPublicacao"  required value="<%=obj.getDatapublicacao()%>"/>
                     </div>
 
                     <div class="form-group">
                         <label>Categoria</label>
-                        <input class="form-control" type="text"  name="txtCategoria"  required />
+                        <select name="selCategoria" class="form-control">
+                            <option>Selecione</option>
+                        <%
+                         String selecionado;
+                         for(Categoria c:categorias){
+                             
+                            if(obj.getCategoria().getId()==c.getId()){
+                                selecionado="selected";
+                            }
+                            else{
+                                selecionado="";
+                            }
+                            
+                        %>
+                        <option value="<%=c.getId()%>" <%=selecionado%>>
+                            
+                            
+                        <%=c.getNome()%>
+                        </option>
+                        <%}%>
+                        </select>
                     </div>
-
+                        
                     <div class="form-group">
                         <label>Editora</label>
-                        <input class="form-control" type="text"  name="txtEditora"  required />
+                        <select name="selCategoria" class="form-control">
+                            <option>Selecione</option>
+                        <%
+                         String sele;
+                         for(Editora e:editoras){
+                             
+                            if(obj.getEditora().getCnpj()==e.getCnpj()){
+                                sele="selected";
+                            }
+                            else{
+                                sele="";
+                            }
+                            
+                        %>
+                        <option value="<%=e.getCnpj()%>" <%=sele%>>
+                            
+                            
+                        <%=e.getNome()%>
+                        </option>
+                        <%}%>
+                        </select>
                     </div>
 
-                    <div class="form-group">
+                   <div class="form-group">
                         <label>Imagem 1</label>
-                        <input class="form-control" type="text"  name="txtImg1"  required />
-                    </div>
+                        <input type="file" name="arquivo1" id="arquivo1"  accept="image/*" />
+                        <img src="../arquivos/<%=obj.getImagem1()%>" id="img1"/>
+                        <input type="hidden" name="txtFotoVelha" value="<%=obj.getImagem1()%>">
+                   </div>
 
                     <div class="form-group">
                         <label>Imagem 2</label>
-                        <input class="form-control" type="text"  name="txtImg2"  required />
+                        <input class="form-control" type="text"  name="txtImg2"/>
                     </div>
 
                     <div class="form-group">
                         <label>Imagem 3</label>
-                        <input class="form-control" type="text"  name="txtImg3"  required />
-                    </div>
-
-                    <div class="form-group">
-                        <label>Imagem 3</label>
-                        <input class="form-control" type="text"  name="txtImg3"  required />
-                        <TextArea name="txtSinopse"></TextArea>
+                        <input class="form-control" type="text"  name="txtImg3"/>
                     </div>
                     
                     <div class="form-group">
                         <label>Autores</label>
 
-                        <%for (Autor a : autor) {%>
+                        <%for (Autor a : autores) {
+                            if(obj.getAutorList().contains(a)){
+                                selecionado = "checked";
+                            }
+                            else{
+                                selecionado = "";
+                            }
+                        %>
                         <input type="checkbox" name="autoreschk" value="<%=a.getId()%>"><%=a.getNome()%>
 
                         <%}%>
@@ -147,9 +243,27 @@
                     <button class="btn btn-primary btn-sm" type="submit">Salvar</button>
                 
                 </div>
-            </form>>
+            </form>
 
     </div>
 </div>
 <!-- /.row -->
     <%@include file="../rodape.jsp" %>
+    
+    <script>
+    function readURL(input,destino) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#'+destino).attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#arquivo1").change(function(){
+        readURL(this,"img1");
+    });
+</script>p" %>

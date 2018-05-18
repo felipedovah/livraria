@@ -1,6 +1,8 @@
 <%@page import="java.math.BigDecimal"%>
 <%@page import="modelo.Categoria"%>
 <%@page import="dao.CategoriaDAO"%>
+
+
 <%@include file="../cabecalho.jsp" %>
 <%
     String msg = "";
