@@ -15,8 +15,8 @@
         obj.setNacionalidade(request.getParameter("txtNacionalidade"));
         obj.setSexo(request.getParameter("txtSexo").charAt(0));
         
-        if(request.getParameter("txtFoto") != null){
-            obj.setFoto(request.getParameter("txtFoto"));
+        if(request.getParameter("arquivo55") != null){
+            obj.setFoto(request.getParameter("arquivo55"));
         }
 
         Boolean resultado = dao.incluir(obj);
@@ -81,7 +81,7 @@
                     
                     <div class="form-group">
                         <label>Foto</label>
-                        <input type="file" name="txtFoto"/>
+                        <input type="file" name="arquivo55"/>
                     </div>
                     
                     

@@ -17,6 +17,9 @@ String classe = "";
         if(request.getParameter("txtLogo") != null){
             obj.setLogo(request.getParameter("txtLogo"));
         }
+        else{
+            obj.setLogo(request.getParameter("txtLogoVelha"));
+        }
         
         Boolean resultado = dao.alterar(obj);
         
@@ -88,8 +91,10 @@ String classe = "";
                     
                     <div class="form-group">
                         <label>Logo</label>
-                        <input type="file" name="txtLogo" required value="<%=obj.getLogo() %>" />
-                    </div>
+                        <input type="file" name="txtLogo" id="txtLogo"  accept="image/*" />
+                        <img width="40px" height="40px" src="../arquivos/<%=obj.getLogo()%>" id="txtLogoVelha"/>
+                        <input type="hidden" name="txtLogoVelha" value="<%=obj.getLogo()%>">
+                   </div>
 
 
                 <button class="btn btn-primary btn-sm" type="submit">Salvar</button>
@@ -103,3 +108,22 @@ String classe = "";
 </div>
 <!-- /.row -->
 <%@include file="../rodape.jsp" %>
+<script>
+    function readURL(input,destino) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#'+destino).attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+            
+        }
+    }
+    
+    $("#txtLogo").change(function(){
+        readURL(this,"txtLogoVelha");
+    });
+    
+</script>

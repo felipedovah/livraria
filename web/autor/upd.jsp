@@ -14,8 +14,17 @@ String classe = "";
         obj.setId(Integer.parseInt(request.getParameter("codigo")));
         obj.setNome(request.getParameter("txtNome"));
         obj.setNacionalidade(request.getParameter("txtNacionalidade"));
-        obj.setSexo(request.getParameter("txtNome").charAt(0));
-        obj.setFoto(request.getParameter("txtFoto"));
+        obj.setSexo(request.getParameter("txtSexo").charAt(0));
+        //obj.setFoto(request.getParameter("arquivo55"));
+      
+        
+        if (request.getParameter("arquivo55") != null) {
+            obj.setFoto(request.getParameter("arquivo55"));
+        }
+        else{
+            obj.setFoto(request.getParameter("txtFotoVelha55"));
+        }
+        
         Boolean resultado = dao.alterar(obj);
         
         if(resultado){
@@ -97,18 +106,40 @@ String classe = "";
                     
                     <div class="form-group">
                         <label>Foto</label>
-                        <input type="file" name="txtFoto" required value="<%=obj.getNome() %>">
-                    </div>
+                        <input type="file" name="arquivo55" id="arquivo55"  accept="image/*" />
+                        <img width="40px" height="40px" src="../arquivos/<%=obj.getFoto()%>" id="img55"/>
+                        <input type="hidden" name="txtFotoVelha55" value="<%=obj.getFoto()%>">
+                   </div>
 
 
                 <button class="btn btn-primary btn-sm" type="submit">Salvar</button>
                 
 
                 </div>
-            </form>>
+            </form>
 
 
     </div>
 </div>
 <!-- /.row -->
 <%@include file="../rodape.jsp" %>
+
+<script>
+    function readURL(input,destino) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#'+destino).attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+            
+        }
+    }
+    
+    $("#arquivo55").change(function(){
+        readURL(this,"img55");
+    });
+    
+</script>
